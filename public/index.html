@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="dark">
+	<head>
+		<title>Chat</title>
+		<meta charset="utf-8">
+		<meta name="description" content="Chat simples usando Node js e Socket.io no backend">
+		<meta name="author" content="Davis Superheavy">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="theme-color" content="#005662">
+		<link rel="canonical" href="/"/>
+		<link async rel="manifest" href="manifest.json">
+		<link async rel="icon" sizes="32x32" href="icon.png">
+        <link async rel="apple-touch-icon" href="icon.png">
+        <link rel="stylesheet" href="styles/style.css">
+		<link rel="stylesheet" href="styles/style.min.css" async>
+		<base href="/" />
+	</head>
+	<body>
+        <br>
+        <div class="container">
+            <form id="chat">
+                <div class="row">
+                    <div class="col s12">
+                        <div class="flex-box content-between items-stretch pad-8 transparent">
+                            <div class="input-field">
+                                <input type="text" id="userName" name="userName" autocomplete="off">
+                                <label for="userName" class="">Seu nome</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div id="messages" class="flex-box flex-col content-start items-start pad-8 outlined"></div>
+                    </div>
+                    <div class="col s12">
+                        <div class="flex-box items-stretch outlined transparent pad-8">
+                            <div class="input-field spacer">
+                                <textarea id="message" name="message" class="textarea"></textarea>
+                                <label for="message">Digite sua mensagem</label>
+                            </div>
+                            <div class="flex-box space transparent">
+                                <button id="btnSend" class="button primary-color outlined waves-effect">Enviar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+    <script src="library/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script type="text/javascript">
+        var socket = io('http://localhost:3000')
+        var btnSend = document.getElementById("btnSend") ? document.getElementById("btnSend") : null
+
+        function renderMessage(message) {
+            var query = '<div class="message"><strong>' + message.author + ': </strong>' + message.message + '</div>'
+            document.getElementById("messages").insertAdjacentHTML('beforeend', query)
+        }
+
+        socket.on('previousMessage', function(messages) {
+            for (message of messages) {
+                renderMessage(message)
+            }
+        })
+
+        socket.on('receivedMessage', function(message) {
+            renderMessage(message)
+        })
+
+        btnSend.addEventListener('click', (event) => {
+            event.preventDefault()
+
+            var author = document.getElementById('userName')
+            var message = document.getElementById('message')
+
+            if (author.value.length && message.value.length) {
+                var chatObject = {
+                    author: author.value,
+                    message: message.value
+                }
+
+                renderMessage(chatObject)
+
+                socket.emit('chat', chatObject)
+
+                document.getElementById('message').value = ''
+            }
+        })
+    </script>
+</html>

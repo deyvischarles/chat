@@ -1,0 +1,35 @@
+{
+  "name": "Supermachine",
+  "short_name": "Supermachine",
+  "description": "Chat simples usando Node Js e Socket.io no backend",
+  "theme_color": "#005662",
+  "background_color": "#00838f",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/?utm_source=homescreen",
+  "orientation": "landscape",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "adaptive-icon.svg",
+      "type": "image/svg",
+      "sizes": "108x108",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
